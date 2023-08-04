@@ -2,7 +2,7 @@
 
 use std::{
 	error::Error,
-	fs::OpenOptions,
+	fs::{OpenOptions, self},
 	io::prelude::*,
 	process::Command,
 	collections::HashMap,
@@ -63,6 +63,9 @@ impl Profile {
 	pub fn new() -> Self {
 		let user  = dotenv::var("USERNAME").expect("USERNAME or .env file not found!");
 		let token = dotenv::var("API_TOKEN").expect("API_TOKEN or .env file not found!");
+		
+		fs::create_dir_all("data").expect("Program should have permission to create folder");
+		
 		Self {
 			posts:   load_handler("data/posts.dat").unwrap_or_default(),
 			w_basic: load_handler("data/w_basic.dat").unwrap_or_default(),
